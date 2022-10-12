@@ -5,11 +5,6 @@ import json
 from eventhook import Event_hook
 from threading import Thread, Lock
 
-"""
-pip install vosk
-download the models from https://alphacephei.com/vosk/models
-"""
-
 class AI():
     __name = ""
     __skill = []

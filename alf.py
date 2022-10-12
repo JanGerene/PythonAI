@@ -1,10 +1,8 @@
 from ai import AI
-from datetime import datetime
 from skills import factory, loader
 from plugins import plugin_loader, plugin_factory
 import json
 from eventhook import Event_hook
-import sys
 
 alf = AI()
 
@@ -28,12 +26,10 @@ print(f'skills: {skills}')
 with open("./plugins/plugins.json") as f:
     plugin_data = json.load(f)
     print(f'plugins: {plugin_data["plugins"]}')
-    # load the plugins
     plugin_loader.load_plugins(plugin_data["plugins"])
 
 plugins = [plugin_factory.create(item) for item in plugin_data["items"]]
 
-# Register all the plugins
 for item in plugins:
     item.register(alf)
 
