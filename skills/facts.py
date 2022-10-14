@@ -1,10 +1,13 @@
-from randfacts import randfacts
 from dataclasses import dataclass
-from skills import factory
+
 from ai import AI
+from randfacts import randfacts
+
+from skills import factory
+
 
 @dataclass
-class Facts_skill():
+class FactsSkill():
     name = 'facts_skill'
 
     def commands(self, command:str):
@@ -15,6 +18,7 @@ class Facts_skill():
         ai.say(fact)
         return fact
 
+
 def initialize():
-    factory.register('facts_skill', Facts_skill)
+    factory.register('facts_skill', FactsSkill)
  

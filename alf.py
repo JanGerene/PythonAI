@@ -1,14 +1,16 @@
-from ai import AI
-from skills import factory, loader
-from plugins import plugin_loader, plugin_factory
 import json
-from eventhook import Event_hook
+
+from ai import AI
+from eventhook import EventHook
+from plugins import plugin_factory, plugin_loader
+from skills import factory, loader
+
 
 alf = AI()
 
 # Setup events for plugins to attach to
-alf.start = Event_hook()
-alf.stop = Event_hook()
+alf.start = EventHook()
+alf.stop = EventHook()
 
 command = ""
 

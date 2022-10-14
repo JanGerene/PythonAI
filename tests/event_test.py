@@ -1,5 +1,5 @@
 from time import sleep
-from eventhook import Event_hook
+from eventhook import EventHook
 
 def test_event_hook_after():
     print("this is an event hook for after")
@@ -10,8 +10,8 @@ def test_event_hook_before():
 def moosay():
     print("this is a moosay")
 
-before = Event_hook()
-after = Event_hook()
+before = EventHook()
+after = EventHook()
 
 before.register(test_event_hook_before)
 after.register(test_event_hook_after)

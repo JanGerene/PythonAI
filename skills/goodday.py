@@ -4,12 +4,14 @@ from skills import factory
 from datetime import datetime
 from ai import AI
 
+
 @dataclass
 class GooddaySkill:
     name = 'goodday'
 
     def commands(self, command:str):
         return ['goodday', 'good day', 'good evening', 'good night']
+
 
     def handle_command(self, command:str, ai:AI):
         now = datetime.now()
@@ -26,6 +28,6 @@ class GooddaySkill:
         ai.say(message)
         return 'goodday'
 
+
 def initialize():
     factory.register('goodday_skill', GooddaySkill)
-    # print("goodday initialized")

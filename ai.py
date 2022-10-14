@@ -1,9 +1,12 @@
-import pyttsx3
-from vosk import Model, KaldiRecognizer
-from pyaudio import PyAudio, paInt16
 import json
-from eventhook import Event_hook
-from threading import Thread, Lock
+from threading import Lock, Thread
+
+import pyttsx3
+from pyaudio import PyAudio, paInt16
+from vosk import KaldiRecognizer, Model
+
+from eventhook import EventHook
+
 
 class AI():
     __name = ""
@@ -12,11 +15,9 @@ class AI():
    
     def __init__(self, name=None):
         self.engine = pyttsx3.init()
-
-        voices = self.engine.getProperty('voices')
-        self.engine.setProperty('voice' ,voices[5].id)
-        name = voices[5].name
-        print(name)
+        for voice in self.engine.getProperty('voices'):
+            if id == voice.id: 
+                self.engine.setProperty("voice", voice.id)
 
         model = Model('./model') # path to model
         self.r = KaldiRecognizer(model, 16000)
@@ -30,10 +31,11 @@ class AI():
         self.audio.start_stream()
 
         # Setup event hooks
-        self.before_speaking = Event_hook()
-        self.after_speaking = Event_hook()
-        self.before_listening = Event_hook()
-        self.after_listening = Event_hook()
+        self.before_speaking = EventHook()
+        self.after_speaking = EventHook()
+        self.before_listening = EventHook()
+        self.after_listening = EventHook()
+        
         
     @property 
     def name(self):
@@ -45,7 +47,8 @@ class AI():
         self.__name = value
         self.engine.say(sentence)
         self.engine.runAndWait()
-
+    
+    
     def speak(self, sentence):
         """ Added extra function so it can be can be called from a thread """
         
@@ -55,12 +58,9 @@ class AI():
         self.before_speaking.trigger(sentence)
         self.engine.say(sentence)
         self.engine.iterate()
-        # self.engine.runAndWait()
         self.after_speaking.trigger(sentence)
-
-        # Release the lock
         self.lock.release()
-
+        
 
     def say(self, sentence):
         """ launch a new thread to speak """
@@ -68,24 +68,20 @@ class AI():
         t = Thread(target = self.speak, args = (sentence,))
         t.start()
         self.engine.endLoop()
-        # t.join()
+        
         
     def listen(self):
-           
         phrase = ""
-        
         if self.r.AcceptWaveform(self.audio.read(4096,exception_on_overflow = False)): 
             self.before_listening.trigger()
             phrase = self.r.Result()
             phrase = phrase.removeprefix('the ')
-            
             phrase = str(json.loads(phrase)["text"])
-
             if phrase:
                 self.after_listening.trigger(phrase)
             return phrase   
-
         return None
+
 
     def stop_ai(self):
         self.engine.stop()

@@ -2,17 +2,19 @@
 # AI Calendar skill
 # Kevin McAleer - August 2021
 
-from ics import Calendar, Event
-from pathlib import Path
 import os
-import yaml
-from datetime import datetime
-from dateutil.relativedelta import *
-import pytz
 from dataclasses import dataclass
+from datetime import datetime
+from pathlib import Path
+
 import dateparser
-from skills import factory
+import pytz
+import yaml
 from ai import AI
+from dateutil.relativedelta import *
+from ics import Calendar, Event
+
+from skills import factory
 
 calendar_filename = 'docs/myfile.ics'
 calendar_datafile = 'myfile.yml'
@@ -132,10 +134,11 @@ class Calendar_for_AI():
 
 
 @dataclass
-class Calender_skill():
+class CalenderSkill():
     name = 'calendar_skill'
     calendar = Calendar_for_AI()
     calendar.load()
+
 
     def commands(self, command:str):
         return ['add event','add to calendar','new event','add a new event',
@@ -143,6 +146,7 @@ class Calender_skill():
                 'list events',"what's on this month","what's coming up this month",
                 "what's on this week","what's coming up this week","what's happening",
                 'list all events']
+    
     
     def add_event(self, alf:AI)->bool:
         alf.say("What is the name of the event")
@@ -161,6 +165,8 @@ class Calender_skill():
         except:
             print("opps there was an error")
             return False
+        
+        
     def remove_event(self, alf:AI)->bool:
         alf.say("What is the name of the event you want to remove?")
         try:
@@ -176,6 +182,7 @@ class Calender_skill():
         except:
             print("opps there was an error")
             return False
+
 
     def list_events(self, period, alf:AI)->bool:
         this_period = self.calendar.list_events(period=period)
@@ -207,9 +214,9 @@ class Calender_skill():
                 message = message + " with an event description of " + description
                 # print(message)
                 alf.say(message)
+      
        
-    def handle_command(self, command:str, ai:AI):
-        
+    def handle_command(self, command:str, ai:AI):  
         if command in ['add event','add to calendar','new event','add a new event']:
             self.add_event()
         if command in ['delete event','remove event','cancel event']:
@@ -221,5 +228,6 @@ class Calender_skill():
         if command in ['list all events']:
             self.list_events(period='all', ai=ai)
 
+
 def initialize():
-    factory.register('calendar_skill', Calender_skill)
+    factory.register('calendar_skill', CalenderSkill)

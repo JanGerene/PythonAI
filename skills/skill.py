@@ -1,5 +1,7 @@
 from typing import Protocol
+
 from ai import AI
+
 
 class Skill(Protocol):
 
