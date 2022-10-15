@@ -5,33 +5,7 @@ An opensource AI Assistant for the Raspberry Pi
 
 ---
 
-## 4 August Update
 
-I'm returning to this project and will be doing a couple of new videos to improve the capabilities and to tidy up our code as its grown a bit unwieldly!
-
-Here are a couple of things I'll be looking next:
-
-- [x] a conversation history
-- [X] a conversation API
-- [X] a web interface (finally!)
-- [X] a 'proper' skills framework, using plugin technology
-- [X] an event framework to be able to add functionality via plugins
-
-Google have stopped supporting the APi we previously used to convert speech audio to text, so I've not moved to an offline library called Vosk. Its very easy to setup - just type:
-
-``` bash
-pip install vosk
-```
-
-and you'll install the main library for Python.
-You'll also need to download a model from <https://alphacephei.com/vosk/models>. I went with the `vosk-model-en-us-0.22` model, which although large is ery accurate. To install the model, just unzip the vosk-model-en-us-0.22.zip file and rename the unzipped folder to `model` and put that in the root of the git repository.
-
-## Code Refactor
-
-Since I started this project I've learned a lot more about Python, and Python itself has undergone many minor releases.
-I've refactored almost all the code from the original project to make it easier to read, maintain and extend. Each skill now as a separate skill file that contains everything associated with that skill, and there is a new skill framework for importing the skills at runtime. This means we can add new skills without having to touch the main program.
-
-The new skills framework mean that adding a new conversation history was very simple - I was even able to quickly add an API on top of the conversation history so we can read that in and dynamically update it using some javascript (and jQuery to pull in the convesation history data from the API).
 
 ## Skills framework
 
@@ -100,18 +74,3 @@ Make sure you have pyaudio and espeak installed:
 sudo apt-get install espeak
 sudo apt-get install python-audio 
 ```
-
-## Respeaker (Microphone array Hardware for Raspberry Pi)
-
-Using the respeaker hat from Seeed studios:
-
-```bash
-git clone https://github.com/respeaker/seeed-voicecard
-cd seeed-voicecard
-sudo ./install.sh
-sudo reboot
-```
-
-If this doesn't work and you get ASLA error messages, try:
-
-*It may probably happen that the driver won't compile with the latest kernel when raspbian rolls out new patches to the kernel. If so, please try sudo ./install.sh --compat-kernel which uses an older kernel but ensures that the driver can work.*
