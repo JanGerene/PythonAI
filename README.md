@@ -2,10 +2,14 @@
 
 An opensource AI Assistant for the Raspberry Pi
 **By Kevin McAleer**
+with some modifications **By Jan Gerene**
 
 ---
 
+## To use Vosk
 
+Download a model from https://alphacephei.com/vosk/models 
+Use the vosk-model-small-en-us model.  This is smaller and more geared towards Raspberry Pi
 
 ## Skills framework
 
